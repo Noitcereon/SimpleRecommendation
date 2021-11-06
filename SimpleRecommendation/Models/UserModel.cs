@@ -12,6 +12,7 @@ namespace SimpleRecommendation.Models
         #region Constructors
         public UserModel()
         {
+            Name = "";
             ViewedProducts = new List<int>();
             PreviouslyPurchasedProducts = new List<int>();
         }
