@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +8,9 @@ namespace SimpleRecommendation.Models
 {
     public class MovieModel
     {
+        private int _releaseYear;
+        private decimal _price;
+
         #region Constructors
         public MovieModel()
         {
@@ -26,16 +28,29 @@ namespace SimpleRecommendation.Models
         }
         #endregion
         #region Parameters
-        [Required]
         public int Id { get; init; }
-        [Required][MinLength(1)]
         public string Name { get; set; }
 
-        [Range(1800, 9999)] // First movie made was near the end of the 19th century.
-        public int ReleaseYear { get; set; }
+        public int ReleaseYear
+        {
+            get => _releaseYear; set
+            {
+                if (value > 9999 || value < 1800)
+                    throw new ArgumentOutOfRangeException(nameof(_releaseYear), "ReleaseYear must be between 1800 & 9999");
+                _releaseYear = value;
+            }
+        }
         public List<string> Keywords { get; set; }
         public double Rating { get; set; }
-        public decimal Price { get; set; }
+        public decimal Price
+        {
+            get => _price; set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException(nameof(_price), "Price cannot be negative.");
+                _price = value;
+            }
+        }
         #endregion
 
         #region Methods
@@ -44,7 +59,7 @@ namespace SimpleRecommendation.Models
             string keywords = "";
             if (Keywords.Count > 0)
             {
-                
+
                 foreach (string keyword in Keywords)
                 {
                     if (keyword.Equals(Keywords.Last()))
