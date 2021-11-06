@@ -10,6 +10,7 @@ namespace SimpleRecommendation.Models
     {
         private int _releaseYear;
         private decimal _price;
+        private double _rating;
 
         #region Constructors
         public MovieModel()
@@ -41,7 +42,15 @@ namespace SimpleRecommendation.Models
             }
         }
         public List<string> Keywords { get; set; }
-        public double Rating { get; set; }
+        public double Rating
+        {
+            get => _rating; set
+            {
+                if (value < 0 || value > 5)
+                    throw new ArgumentOutOfRangeException(nameof(_rating), "Rating must be between 0-5");
+                _rating = value;
+            }
+        }
         public decimal Price
         {
             get => _price; set

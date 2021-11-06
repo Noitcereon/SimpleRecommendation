@@ -45,6 +45,7 @@ namespace SimpleRecommendationTests
         {
             _movie.ReleaseYear = 1800;
             _movie.ReleaseYear = 9999;
+
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => _movie.ReleaseYear = -1);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => _movie.ReleaseYear = 1799);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => _movie.ReleaseYear = 10000);
@@ -56,6 +57,16 @@ namespace SimpleRecommendationTests
             _movie.Price = new decimal(9999999.9);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => _movie.Price = new decimal(-0.1));
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => _movie.Price = new decimal(-5000));
+        }
+        [TestMethod]
+        public void MovieModel_RatingRestrictions()
+        {
+            _movie.Rating = 0.0;
+            _movie.Rating = 3;
+            _movie.Rating = 5.0;
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _movie.Rating = -0.1);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _movie.Rating = 5.01);
         }
 
     }
