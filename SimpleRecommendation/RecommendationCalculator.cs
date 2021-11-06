@@ -53,7 +53,7 @@ namespace SimpleRecommendation
         public IList<MovieModel> RecommendProductToUser(int userId)
         {
             // Note: If I had more time I would've looked into making this with Machine Learning (e.g. with Microsoft ML.NET NuGet)
-            throw new NotImplementedException();
+            throw new NotImplementedException("RecommendProductToUser(int userId) has not been implemented.");
         }
 
         private void CountTimesMovieHasBeenPurchased(UserModel user, IDictionary<int, int> moviePurchaseStats)
