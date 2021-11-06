@@ -24,16 +24,30 @@ namespace SimpleRecommendationTests
         public void ReadMoviesFromTextFile_ReturnsCorrectType()
         {
             var movies = _dataReader.ReadMoviesFromTextFile();
-            List<MovieModel> moviesList = new();
 
-            Assert.IsInstanceOfType(movies, moviesList.GetType());
+            Assert.IsInstanceOfType(movies, typeof(List<MovieModel>));
+        }
+        [TestMethod]
+        public void ReadMoviesFromTextFile_ReturnsMoreThan0()
+        {
+            var movies = _dataReader.ReadMoviesFromTextFile();
+
+            Assert.IsTrue(movies.Count > 0);
         }
 
-        //[TestMethod]
-        //public void ReadMoviesFromTextFile_FailsGracefully()
-        //{
-        //    List<MovieModel> movies = _dataReader.ReadMoviesFromTextFile();
+        [TestMethod]
+        public void ReadUsersFromTextFile_ReturnsCorrectType()
+        {
+            List<UserModel> users = _dataReader.ReadUsersFromTextFile();
 
-        //}
+            Assert.IsInstanceOfType(users, typeof(List<UserModel>));
+        }
+        [TestMethod]
+        public void ReadUsersFromTextFile_ReturnsMoreThan0()
+        {
+            var users = _dataReader.ReadUsersFromTextFile();
+
+            Assert.IsTrue(users.Count > 0);
+        }
     }
 }
