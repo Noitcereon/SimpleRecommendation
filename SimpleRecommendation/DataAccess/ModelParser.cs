@@ -17,7 +17,7 @@ namespace SimpleRecommendation
         /// Makes a Model object from a string with comma seperated values.
         /// </summary>
         /// <param name="lineOfData">A line of comma seperated values</param>
-        /// <returns>An object of type T</returns>
+        /// <returns>An object of type T.</returns>
         /// <exception cref="ArgumentException">Thrown on invalid data.</exception>
         public T GenerateModel<T>(string lineOfData) where T : class, new()
         {
@@ -42,19 +42,11 @@ namespace SimpleRecommendation
             return model;
         }
 
-        private static void ThrowExceptionOnInvalidDataLength(string[] splitModelData, int columnsInModelData)
-        {
-            if (DataIsCorrectLength(splitModelData, columnsInModelData) == false)
-            {
-                throw new ArgumentException("Data is in the wrong format", nameof(splitModelData));
-            }
-        }
-
         private UserModel ParseUser(string[] splitUserData)
         {
             #region Try to convert to correct values
             if (!int.TryParse(splitUserData[0], out int id)) throw new ArgumentException("The 1st (0) column should be an integer representing id.");
-            string name = splitUserData[1];
+            string name = splitUserData[1].Trim();
             List<int> viewedProducts = MakeIntList(splitUserData[2]);
             List<int> previouslyPurchasedProducts = MakeIntList(splitUserData[3]);
             #endregion
@@ -89,7 +81,7 @@ namespace SimpleRecommendation
             return output;
         }
 
-        private static MovieModel ParseMovie(string[] splitMovieData)
+        private MovieModel ParseMovie(string[] splitMovieData)
         {
             // Columns: id, name, year, keyword 1, keyword 2, keyword 3, keyword 4, keyword 5, rating, price
             #region Trying to convert to correct values
@@ -114,6 +106,14 @@ namespace SimpleRecommendation
                 Price = price
             };
             return movie;
+        }
+
+        private static void ThrowExceptionOnInvalidDataLength(string[] splitModelData, int columnsInModelData)
+        {
+            if (DataIsCorrectLength(splitModelData, columnsInModelData) == false)
+            {
+                throw new ArgumentException("Data is in the wrong format (not enough columns)", nameof(splitModelData));
+            }
         }
 
         private static bool DataIsCorrectLength(string[] splitMovieData, int expectedColumns)
