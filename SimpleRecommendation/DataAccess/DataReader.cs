@@ -9,12 +9,12 @@ namespace SimpleRecommendation
 {
     public class DataReader
     {
-        private string _dataDirectory = Directory.GetCurrentDirectory() + "/CaseData";
+        private string _dataDirectory = "./CaseData";
         private IModelParser _modelParser = new ModelParser();
 
         public List<MovieModel> ReadMoviesFromTextFile()
         {
-            string productsTxtPath = _dataDirectory + "/Products.txt";
+            string productsTxtPath = _dataDirectory + "/Product.txt";
 
             if (File.Exists(productsTxtPath) is false)
             {

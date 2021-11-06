@@ -6,12 +6,12 @@ namespace SimpleRecommendationTests
     [TestClass]
     public class ModelParserTests
     {
-        private ModelParser _modelParse;
+        private ModelParser _modelParser;
 
         [TestInitialize]
         public void Init()
         {
-            _modelParse = new ModelParser();
+            _modelParser = new ModelParser();
         }
 
         [TestMethod]
