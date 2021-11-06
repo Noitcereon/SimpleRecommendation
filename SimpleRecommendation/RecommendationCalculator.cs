@@ -45,7 +45,7 @@ namespace SimpleRecommendation
 
 
         /// <summary>
-        /// Recommends a specific product to a user based on their browsing history, previously purchased products and current page.
+        /// Recommends a specific product to a user based on their current page and previously purchased genres.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
