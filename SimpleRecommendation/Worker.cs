@@ -35,78 +35,93 @@ namespace SimpleRecommendation
 
         public void PrintIntro()
         {
-            Console.WriteLine("Welcome to the \"website\"");
-            Console.WriteLine();
-            PrintHeadline("DataReader Tests");
+            try
+            {
+                Console.WriteLine("Welcome to the \"website\"");
+                Console.WriteLine();
+                PrintHeadline("DataReader Tests");
 
-            DataReader reader = new DataReader();
+                DataReader reader = new DataReader();
 
-            #region Parser Tryout
-            //string lineOfData = "23, Phantasm II,9000, Action, Fantasy, Horror, Sci-Fi, Thriller,3.8,20";
-            //IModelParser parser = new ModelParser();
-            //var movie = parser.GenerateModel<MovieModel>(lineOfData);
+                #region Parser Tryout
+                //string lineOfData = "23, Phantasm II,9000, Action, Fantasy, Horror, Sci-Fi, Thriller,3.8,20";
+                //IModelParser parser = new ModelParser();
+                //var movie = parser.GenerateModel<MovieModel>(lineOfData);
 
-            //Console.WriteLine(movie);
-            #endregion
+                //Console.WriteLine(movie);
+                #endregion
 
-            #region Read Movies
-            //try
-            //{
-            //    List<MovieModel> movies = reader.ReadMoviesFromTextFile();
-            //    foreach (MovieModel movie in movies)
-            //    {
-            //        Console.WriteLine(movie);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"Failed to read Movies from txt.");
-            //    if (Environment.GetEnvironmentVariable("Mode") == "Debug")
-            //    {
-            //        Console.WriteLine($"Exception message: {ex.Message}");
-            //    }
-            //}
-            #endregion
+                #region Read Movies
+                //try
+                //{
+                //    List<MovieModel> movies = reader.ReadMoviesFromTextFile();
+                //    foreach (MovieModel movie in movies)
+                //    {
+                //        Console.WriteLine(movie);
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"Failed to read Movies from txt.");
+                //    if (Environment.GetEnvironmentVariable("Mode") == "Debug")
+                //    {
+                //        Console.WriteLine($"Exception message: {ex.Message}");
+                //    }
+                //}
+                #endregion
 
-            #region Read Users
-            //try
-            //{
-            //    List<UserModel> users = reader.ReadUsersFromTextFile();
-            //    foreach (UserModel user in users)
-            //    {
-            //        Console.WriteLine(user);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
-            #endregion
+                #region Read Users
+                //try
+                //{
+                //    List<UserModel> users = reader.ReadUsersFromTextFile();
+                //    foreach (UserModel user in users)
+                //    {
+                //        Console.WriteLine(user);
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine(ex.Message);
+                //}
+                #endregion
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         public void PrintPopularProducts(RecommendationCalculator recommender)
         {
-            PrintHeadline("Popular movies");
-
-            List<UserModel> users = _reader.ReadUsersFromTextFile();
-            List<MovieModel> movies = _reader.ReadMoviesFromTextFile();
-
-            var popularMovies = recommender.DeterminePopularMovies(movies, users); 
-
-            foreach (var movie in popularMovies)
+            try
             {
-                Console.WriteLine(movie);
+                PrintHeadline("Popular movies");
+
+                List<UserModel> users = _reader.ReadUsersFromTextFile();
+                List<MovieModel> movies = _reader.ReadMoviesFromTextFile();
+
+                var popularMovies = recommender.DeterminePopularMovies(movies, users);
+
+                foreach (var movie in popularMovies)
+                {
+                    Console.WriteLine(movie);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
         public void PrintUserSpecificRecommendations(RecommendationCalculator recommender)
         {
-            PrintHeadline("User Specific Recommendations");
-
-            List<UserModel> users = _reader.ReadUsersFromTextFile();
-            //List<MovieModel> movies = _reader.ReadMoviesFromTextFile();
-
             try
             {
+                PrintHeadline("User Specific Recommendations");
+
+                List<UserModel> users = _reader.ReadUsersFromTextFile();
+                //List<MovieModel> movies = _reader.ReadMoviesFromTextFile();
+
+
                 foreach (var user in users)
                 {
                     Console.WriteLine($"{user.Name} might be interested in: {recommender.RecommendProductToUser(user.Id)}");
@@ -116,7 +131,6 @@ namespace SimpleRecommendation
             {
                 Console.WriteLine(ex.Message);
             }
-
         }
 
 

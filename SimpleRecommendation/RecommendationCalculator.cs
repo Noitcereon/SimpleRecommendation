@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace SimpleRecommendation
 {
-    public class RecommendationCalculator
+    public class RecommendationCalculator : IRecommendationCalculator
     {
-
         /// <summary>
         /// Determines the top 3 popular movies based on the amount of times a movie has been purchased.
         /// </summary>
