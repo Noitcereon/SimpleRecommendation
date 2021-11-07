@@ -97,12 +97,14 @@ namespace SimpleRecommendation
                 PrintHeadline("User Specific Recommendations");
 
                 List<UserModel> users = _reader.ReadUsersFromTextFile();
-                //List<MovieModel> movies = _reader.ReadMoviesFromTextFile();
+                List<MovieModel> movies = _reader.ReadMoviesFromTextFile();
+                List<UserSessionModel> sessions = _reader.ReadUserSessionsFromTextFile();
 
 
-                foreach (var user in users)
+                foreach (var session in sessions)
                 {
-                    Console.WriteLine($"{user.Name} might be interested in: {recommender.RecommendProductToUser(user.Id)}");
+                    var recommendedProduct = recommender.RecommendProductToUser(session, movies, users);
+                    Console.WriteLine($"{users.Find(x => x.Id == session.UserId).Name} might be interested in: {recommendedProduct}");
                 }
             }
             catch (Exception ex)

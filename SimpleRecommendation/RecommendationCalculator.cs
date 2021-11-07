@@ -1,6 +1,7 @@
 ﻿using SimpleRecommendation.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace SimpleRecommendation
             }
 
             IOrderedEnumerable<KeyValuePair<int, int>> sortedMoviePurchaseStats = moviePurchaseStats.OrderByDescending(x => x.Value);
-            
+
             switch (moviePurchaseStats.Count)
             {
                 case 1:
@@ -45,17 +46,51 @@ namespace SimpleRecommendation
 
 
         /// <summary>
-        /// Recommends a specific product to a user based on their current page and previously purchased genres.
+        /// Recommends a specific product to a user based on their currently viewed product and previously purchased genres.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public MovieModel RecommendProductToUser(int userId)
+        public MovieModel RecommendProductToUser(UserSessionModel session, List<MovieModel> movies, List<UserModel> users)
         {
             // Note: If I had more time I would've looked into making this with Machine Learning (with Microsoft ML.NET NuGet)
+
             MovieModel recommendedProduct = new MovieModel();
+            
+            IDictionary<int, MovieModel> movieDictionary = movies.ToDictionary(movie => movie.Id);
 
+            if(movieDictionary.TryGetValue(session.ProductId, out MovieModel currentProduct) == false)
+            {
+                throw new KeyNotFoundException("Ain't got none of that product here. (can't find product with that id)");
+            } 
 
+            UserModel currentUser = users.Find(user => user.Id == session.UserId);
+            if(currentUser == default)
+            {
+                throw new KeyNotFoundException("Could not find the user with the specified session.UserId");
+            }
+
+            List<MovieModel> previouslyPurchasedMovies = new List<MovieModel>();
+
+            foreach (int movieId in currentUser.PreviouslyPurchasedProducts)
+            {
+                if (movieDictionary.TryGetValue(movieId, out MovieModel purchasedMovie) == false)
+                    continue;
+                previouslyPurchasedMovies.Add(purchasedMovie);
+            }
+
+            List<MovieModel> filteredMovies = new List<MovieModel>();
+            if (currentProduct.Keywords.Count > 0)
+            {
+                filteredMovies = movies.Where(movie => movie.Keywords.Contains(currentProduct.Keywords[0])).ToList();
+            }
+            if(filteredMovies.Count <= 0)
+            {
+                return movies[0]; // fallback to a default movie.
+            }
+            Random random = new Random();
+            int randomElementFromFilteredMovies = random.Next(0, filteredMovies.Count() - 1);
+            recommendedProduct = filteredMovies[randomElementFromFilteredMovies];
 
             return recommendedProduct;
         }

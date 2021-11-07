@@ -16,6 +16,13 @@ namespace SimpleRecommendation.Models
         {
 
         }
+
+        public UserSessionModel(int userId, int productId)
+        {
+            UserId = userId;
+            ProductId = productId;
+        }
+
         public override string ToString()
         {
             return $"{UserId}, { ProductId }";

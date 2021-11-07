@@ -12,6 +12,7 @@ namespace SimpleRecommendationTests
         private RecommendationCalculator _recommendationCalculator;
         private List<MovieModel> _movies;
         private List<UserModel> _users;
+        private List<UserSessionModel> _userSessions;
 
         [TestInitialize]
         public void Init()
@@ -36,6 +37,14 @@ namespace SimpleRecommendationTests
                 new UserModel(3, "Ida", new List<int>{2,26,34,35,38 }, new List<int>{ 26,34,38}),
                 new UserModel(4, "Eivind", new List<int>{ 4,7,11,14 }, new List<int>{ 4,11 }),
                 new UserModel(5, "Mia", new List<int>{ 3,4,15,21,25 }, new List<int>{ 15,25 })
+            };
+            _userSessions = new List<UserSessionModel>
+            {
+                new UserSessionModel(1, 20),
+                new UserSessionModel(2, 31),
+                new UserSessionModel(3, 12),
+                new UserSessionModel(5, 10),
+
             };
         }
 
@@ -94,7 +103,7 @@ namespace SimpleRecommendationTests
         [TestMethod]
         public void RecommendProductToUser_RecommendsAProduct()
         {
-            MovieModel recommendedProduct = _recommendationCalculator.RecommendProductToUser(1); // Olav is id 1
+            MovieModel recommendedProduct = _recommendationCalculator.RecommendProductToUser(_userSessions[0], _movies, _users);
 
             Assert.IsInstanceOfType(recommendedProduct, typeof(MovieModel));
             Assert.AreNotEqual("", recommendedProduct.Name);
