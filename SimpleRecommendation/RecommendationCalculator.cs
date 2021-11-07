@@ -45,12 +45,15 @@ namespace SimpleRecommendation
         }
 
 
+
         /// <summary>
-        /// Recommends a specific product to a user based on their currently viewed product and previously purchased genres.
+        /// Recommends a specific product to a user based on their currently viewed product and previously purchased products.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="session">The current session, which contains the id of the viewed product and the user</param>
+        /// <param name="movies">A list of movies to base the recommendation on.</param>
+        /// <param name="users">The users in the system (to find the session user)</param>
+        /// <returns><c>MovieModel</c></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
         public MovieModel RecommendProductToUser(UserSessionModel session, List<MovieModel> movies, List<UserModel> users)
         {
             // Note: If I had more time I would've looked into making this with Machine Learning (with Microsoft ML.NET NuGet Package)
