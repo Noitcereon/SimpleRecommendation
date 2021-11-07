@@ -35,11 +35,31 @@ namespace SimpleRecommendation
                     ThrowExceptionOnInvalidDataLength(splitModelData, columnsInModelData: 4);
                     model = (T)Convert.ChangeType(ParseUser(splitModelData), typeof(T));
                     break;
+                case UserSessionModel:
+                    ThrowExceptionOnInvalidDataLength(splitModelData, columnsInModelData: 2);
+                    model = (T)Convert.ChangeType(ParseUserSession(splitModelData), typeof(T));
+                    break;
                 default:
                     throw new NotImplementedException("Cannot parse that type of model.");
             }
 
             return model;
+        }
+
+        private UserSessionModel ParseUserSession(string[] splitModelData)
+        {
+            #region Try to convert to correct values
+            if (!int.TryParse(splitModelData[0], out int userId)) throw new ArgumentException("The 1st (0) column should be an integer representing a user id.");
+            if (!int.TryParse(splitModelData[1], out int productId)) throw new ArgumentException("The 2nd (1) column should be an integer representing a product id.");
+            #endregion
+
+            UserSessionModel session = new UserSessionModel
+            {
+                UserId = userId,
+                ProductId = productId,
+            };
+
+            return session;
         }
 
         private UserModel ParseUser(string[] splitUserData)

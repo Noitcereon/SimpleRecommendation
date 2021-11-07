@@ -8,7 +8,8 @@ namespace SimpleRecommendation.Models
 {
     public class UserSessionModel
     {
-        public int Id { get; init; }
+        // Might be better to use a Dictionary<int, int> instead of these two values :thinking:
+        public int UserId { get; set; }
         public int ProductId { get; set; }
 
         public UserSessionModel()
@@ -17,7 +18,7 @@ namespace SimpleRecommendation.Models
         }
         public override string ToString()
         {
-            return $"{Id}, { ProductId }";
+            return $"{UserId}, { ProductId }";
         }
     }
 }
