@@ -22,11 +22,11 @@ namespace SimpleRecommendation
                 DataReader reader = new DataReader();
 
                 #region Parser Tryout
-                //string lineOfData = "23, Phantasm II,9000, Action, Fantasy, Horror, Sci-Fi, Thriller,3.8,20";
-                //IModelParser parser = new ModelParser();
-                //var movie = parser.GenerateModel<MovieModel>(lineOfData);
-
-                //Console.WriteLine(movie);
+                foreach (var item in reader.ReadUserSessionsFromTextFile())
+                {
+                    Console.WriteLine(item);
+                }
+                
                 #endregion
 
                 #region Read Movies
