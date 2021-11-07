@@ -111,7 +111,7 @@ namespace SimpleRecommendationTests
         public void RecommendProductToUser_IsNotSameAsCurrentlyViewedProduct()
         {
             // This unit test will fail, if the first product in the data provided is the currently viewed one
-            // (assuming that no other movies with the genre exists or if they do they have been purchased)
+            // (assuming that no other movies with the same genre exists, or if they do they've been purchased)
 
             List<MovieModel> only2Movies = new List<MovieModel>();
             only2Movies.Add(_movies[0]); // genres: action, adventure (default return value, since it is first index entry list.);
@@ -120,18 +120,46 @@ namespace SimpleRecommendationTests
             // Session: user id: 1 (Noit), productid: 5 (Dr. Terror's House of Horrors)
             MovieModel recommendedProduct = _recommendationCalculator.RecommendProductToUser(_userSessions[0], only2Movies, _users);
 
-            Assert.AreEqual(_movies[0], recommendedProduct);
+            Assert.AreNotEqual(_movies[4], recommendedProduct);
         }
         [TestMethod]
         public void RecommendProductToUser_IsNotAPreviouslyPurchasedProduct()
         {
-            // This unit test might fail, if there is a low amount of data.
-            Assert.Fail();
+            // This test could fail if _movies[0] is a previously purchased product (since that's the fallback recommendation)
+            MovieModel recommendedProduct = _recommendationCalculator.RecommendProductToUser(_userSessions[0], _movies, _users);
+            UserModel userFromSession = _users.Find(user => user.Id == _userSessions[0].UserId);
+
+            if (userFromSession == null) Assert.Fail("Error in test");
+
+            // if the recommendation is a previously purchased product this test should fail.
+            foreach (int purchasedProductId in userFromSession.PreviouslyPurchasedProducts)
+            {
+                if (recommendedProduct.Id == purchasedProductId)
+                {
+                    Assert.Fail();
+                }
+            }
         }
         [TestMethod]
-        public void RecommendProductToUser_IsSameGenre()
+        public void RecommendProductToUser_IsSameGenreAsViewedProduct()
         {
             // This unit test might fail, if there is a limited amount of movies with the same genre as the viewed movie.
+            MovieModel recommendation = _recommendationCalculator.RecommendProductToUser(_userSessions[0], _movies, _users);
+            MovieModel viewedProduct = _movies.Find(movie => movie.Id == _userSessions[0].ProductId);
+            if (viewedProduct is null)
+            {
+                Assert.Fail("Error in test.");
+            }
+
+            // if there is ONE of the genres from the viewedProduct in the recommendation it should pass.
+            foreach (string keyword in viewedProduct.Keywords)
+            {
+                if (recommendation.Keywords.Contains(keyword))
+                {
+                    Assert.IsTrue(true);
+                    return;
+                }
+            }
             Assert.Fail();
         }
         [TestMethod]
