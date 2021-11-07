@@ -70,17 +70,29 @@ namespace SimpleRecommendation
                 throw new KeyNotFoundException("Could not find the user with the specified session.UserId");
             }
 
-            List<MovieModel> previouslyPurchasedMovies = MakeListOfPreviouslyPurchases(movieDictionary, currentUser);
+            List<MovieModel> previouslyPurchasedMovies = MakeListOfPreviousPurchases(movieDictionary, currentUser);
 
             List<MovieModel> filteredMovies = new List<MovieModel>();
             if (currentProduct.Keywords.Count > 0)
             {
-                // Filters movies by the first keyword/genre in the currently viewed product
-                filteredMovies = movies.Where(movie => movie.Keywords.Contains(currentProduct.Keywords[0])).ToList();
+                HashSet<MovieModel> uniqueMovies = new();
+
+                for (int i = 0; i < currentProduct.Keywords.Count; i++)
+                {
+                    List<MovieModel> moviesWithTheSameGenre = FilterMoviesByGenre(movies, currentProduct, i);
+
+                    // adding them to a hashset ensures uniqueness.
+                    AddMoviesToHashSet(moviesWithTheSameGenre, ref uniqueMovies);
+                }
+
+                filteredMovies = uniqueMovies.ToList();
+
+                // Remove currently viewed product
                 filteredMovies.Remove(currentProduct);
+                // Some more filtering.
                 RemovePreviouslyPurchasedProducts(filteredMovies, previouslyPurchasedMovies);
             }
-            if (filteredMovies.Count <= 1)
+            if (filteredMovies.Count < 2)
             {
                 return movies[0]; // fallback to a default movie.
             }
@@ -91,7 +103,21 @@ namespace SimpleRecommendation
             return recommendedProduct;
         }
 
-        private List<MovieModel> MakeListOfPreviouslyPurchases(IDictionary<int, MovieModel> movieDictionary, UserModel currentUser)
+        private void AddMoviesToHashSet(List<MovieModel> moviesWithTheSameGenre, ref HashSet<MovieModel> movieModels)
+        {
+            foreach (MovieModel movie in moviesWithTheSameGenre)
+            {
+                movieModels.Add(movie);
+            }
+        }
+
+        private List<MovieModel> FilterMoviesByGenre(List<MovieModel> movies, MovieModel currentProduct, int i)
+        {
+            List<MovieModel> moviesWithTheSameGenre = movies.Where(movie => movie.Keywords.Contains(currentProduct.Keywords[i])).ToList();
+            return moviesWithTheSameGenre;
+        }
+
+        private List<MovieModel> MakeListOfPreviousPurchases(IDictionary<int, MovieModel> movieDictionary, UserModel currentUser)
         {
             List<MovieModel> output = new List<MovieModel>();
 

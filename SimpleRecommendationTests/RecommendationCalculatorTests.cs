@@ -23,7 +23,7 @@ namespace SimpleRecommendationTests
                 new MovieModel(2, "The Sandpiper", 1965, new List<string>{"Drama", "Romance"}, 2, 10),
                 new MovieModel(3, "Crystal Fairy & the Magical Cactus", 2013, new List<string>{"Comedy", "Adventure"}, 4, 12),
                 new MovieModel(4, "Cloudy with a Chance of Meatballs 2", 2013, new List<string>{"Animation", "Children", "Comedy", "Fantasy"}, 3.5, 15),
-                new MovieModel(5, "Dr. Terror's House of Horrors", 1965, new List<string>{"Horror", "Sci-Fi"}, 5, 10), // take note
+                new MovieModel(5, "Dr. Terror's House of Horrors", 1965, new List<string>{"Horror", "Sci-Fi"}, 5, 10),
                 new MovieModel(6, "Speed 2: Cruise Control",1997, new List<string>{ "Action", "Romance", "Thriller" }, 4.3, 15),
                 new MovieModel(7, "Renaissance", 2006, new List<string>{"Action", "Animation", "Film-Noir", "Sci-Fi", "Thriller"}, 4, 10),
                 new MovieModel(8, "Ip Man 2", 2010, new List<string>{"Action" }, 3, 10),
@@ -32,7 +32,7 @@ namespace SimpleRecommendationTests
             };
             _users = new List<UserModel>
             {
-                new UserModel(1, "Olav", new List<int>{6,7,8,9,14,22,24,29 }, new List<int>{ 8,22,24,29}),
+                new UserModel(1, "Noit", new List<int>{6,7,8,9,14,22,24,29 }, new List<int>{ 8,22,24,29}),
                 new UserModel(2, "Tage", new List<int>{1,4,6,8,12,15,16,17,19,22,25,27,30,32,35,40 }, new List<int>{ 1,4,8,15,19}),
                 new UserModel(3, "Ida", new List<int>{2,26,34,35,38 }, new List<int>{ 26,34,38}),
                 new UserModel(4, "Eivind", new List<int>{ 4,7,11,14 }, new List<int>{ 4,11 }),
@@ -110,11 +110,28 @@ namespace SimpleRecommendationTests
         [TestMethod]
         public void RecommendProductToUser_IsNotSameAsCurrentlyViewedProduct()
         {
-            Assert.Fail();
+            // This unit test will fail, if the first product in the data provided is the currently viewed one
+            // (assuming that no other movies with the genre exists or if they do they have been purchased)
+
+            List<MovieModel> only2Movies = new List<MovieModel>();
+            only2Movies.Add(_movies[0]); // genres: action, adventure (default return value, since it is first index entry list.);
+            only2Movies.Add(_movies[4]); // genres: horror, sci-fi
+
+            // Session: user id: 1 (Noit), productid: 5 (Dr. Terror's House of Horrors)
+            MovieModel recommendedProduct = _recommendationCalculator.RecommendProductToUser(_userSessions[0], only2Movies, _users);
+
+            Assert.AreEqual(_movies[0], recommendedProduct);
         }
         [TestMethod]
         public void RecommendProductToUser_IsNotAPreviouslyPurchasedProduct()
         {
+            // This unit test might fail, if there is a low amount of data.
+            Assert.Fail();
+        }
+        [TestMethod]
+        public void RecommendProductToUser_IsSameGenre()
+        {
+            // This unit test might fail, if there is a limited amount of movies with the same genre as the viewed movie.
             Assert.Fail();
         }
         [TestMethod]
