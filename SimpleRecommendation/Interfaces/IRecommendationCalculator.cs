@@ -20,6 +20,6 @@ namespace SimpleRecommendation
         /// <param name="userId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        IList<MovieModel> RecommendProductToUser(int userId);
+        MovieModel RecommendProductToUser(int userId);
     }
 }

@@ -50,10 +50,14 @@ namespace SimpleRecommendation
         /// <param name="userId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public IList<MovieModel> RecommendProductToUser(int userId)
+        public MovieModel RecommendProductToUser(int userId)
         {
-            // Note: If I had more time I would've looked into making this with Machine Learning (e.g. with Microsoft ML.NET NuGet)
-            throw new NotImplementedException("RecommendProductToUser(int userId) has not been implemented.");
+            // Note: If I had more time I would've looked into making this with Machine Learning (with Microsoft ML.NET NuGet)
+            MovieModel recommendedProduct = new MovieModel();
+
+
+
+            return recommendedProduct;
         }
 
         private void CountTimesMovieHasBeenPurchased(UserModel user, IDictionary<int, int> moviePurchaseStats)

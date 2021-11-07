@@ -22,7 +22,7 @@ namespace SimpleRecommendationTests
                 new MovieModel(2, "The Sandpiper", 1965, new List<string>{"Drama", "Romance"}, 2, 10),
                 new MovieModel(3, "Crystal Fairy & the Magical Cactus", 2013, new List<string>{"Comedy", "Adventure"}, 4, 12),
                 new MovieModel(4, "Cloudy with a Chance of Meatballs 2", 2013, new List<string>{"Animation", "Children", "Comedy", "Fantasy"}, 3.5, 15),
-                new MovieModel(5, "Dr. Terror's House of Horrors", 1965, new List<string>{"Horror", "Sci-Fi"}, 5, 10),
+                new MovieModel(5, "Dr. Terror's House of Horrors", 1965, new List<string>{"Horror", "Sci-Fi"}, 5, 10), // take note
                 new MovieModel(6, "Speed 2: Cruise Control",1997, new List<string>{ "Action", "Romance", "Thriller" }, 4.3, 15),
                 new MovieModel(7, "Renaissance", 2006, new List<string>{"Action", "Animation", "Film-Noir", "Sci-Fi", "Thriller"}, 4, 10),
                 new MovieModel(8, "Ip Man 2", 2010, new List<string>{"Action" }, 3, 10),
@@ -43,7 +43,6 @@ namespace SimpleRecommendationTests
         public void DeterminePopularMovies_ReturnsBetween1And3Movies()
         {
             var popularMovies = _recommendationCalculator.DeterminePopularMovies(_movies, _users);
-
             Assert.IsTrue(popularMovies.Count > 0 && popularMovies.Count <= 3);
         }
 
@@ -90,6 +89,15 @@ namespace SimpleRecommendationTests
                     {
                         _users[0]
                     }));
+        }
+
+        [TestMethod]
+        public void RecommendProductToUser_RecommendsAProduct()
+        {
+            MovieModel recommendedProduct = _recommendationCalculator.RecommendProductToUser(1); // Olav is id 1
+
+            Assert.IsInstanceOfType(recommendedProduct, typeof(MovieModel));
+            Assert.AreNotEqual("", recommendedProduct.Name);
         }
     }
 }
