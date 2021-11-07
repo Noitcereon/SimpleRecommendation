@@ -53,7 +53,7 @@ namespace SimpleRecommendation
         /// <exception cref="NotImplementedException"></exception>
         public MovieModel RecommendProductToUser(UserSessionModel session, List<MovieModel> movies, List<UserModel> users)
         {
-            // Note: If I had more time I would've looked into making this with Machine Learning (with Microsoft ML.NET NuGet)
+            // Note: If I had more time I would've looked into making this with Machine Learning (with Microsoft ML.NET NuGet Package)
 
             MovieModel recommendedProduct = new MovieModel();
 
