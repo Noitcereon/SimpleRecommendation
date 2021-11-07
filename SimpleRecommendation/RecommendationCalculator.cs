@@ -56,43 +56,61 @@ namespace SimpleRecommendation
             // Note: If I had more time I would've looked into making this with Machine Learning (with Microsoft ML.NET NuGet)
 
             MovieModel recommendedProduct = new MovieModel();
-            
+
             IDictionary<int, MovieModel> movieDictionary = movies.ToDictionary(movie => movie.Id);
 
-            if(movieDictionary.TryGetValue(session.ProductId, out MovieModel currentProduct) == false)
+            if (movieDictionary.TryGetValue(session.ProductId, out MovieModel currentProduct) == false)
             {
-                throw new KeyNotFoundException("Ain't got none of that product here. (can't find product with that id)");
-            } 
+                throw new KeyNotFoundException("Could not make a recommendation, because of limited data. (can't find product with that id)");
+            }
 
             UserModel currentUser = users.Find(user => user.Id == session.UserId);
-            if(currentUser == default)
+            if (currentUser == default)
             {
                 throw new KeyNotFoundException("Could not find the user with the specified session.UserId");
             }
 
-            List<MovieModel> previouslyPurchasedMovies = new List<MovieModel>();
+            List<MovieModel> previouslyPurchasedMovies = MakeListOfPreviouslyPurchases(movieDictionary, currentUser);
+
+            List<MovieModel> filteredMovies = new List<MovieModel>();
+            if (currentProduct.Keywords.Count > 0)
+            {
+                // Filters movies by the first keyword/genre in the currently viewed product
+                filteredMovies = movies.Where(movie => movie.Keywords.Contains(currentProduct.Keywords[0])).ToList();
+                filteredMovies.Remove(currentProduct);
+                RemovePreviouslyPurchasedProducts(filteredMovies, previouslyPurchasedMovies);
+            }
+            if (filteredMovies.Count <= 1)
+            {
+                return movies[0]; // fallback to a default movie.
+            }
+            Random random = new Random();
+            int randomIndexFromFilteredMovies = random.Next(0, filteredMovies.Count() - 1);
+            recommendedProduct = filteredMovies[randomIndexFromFilteredMovies];
+
+            return recommendedProduct;
+        }
+
+        private List<MovieModel> MakeListOfPreviouslyPurchases(IDictionary<int, MovieModel> movieDictionary, UserModel currentUser)
+        {
+            List<MovieModel> output = new List<MovieModel>();
 
             foreach (int movieId in currentUser.PreviouslyPurchasedProducts)
             {
                 if (movieDictionary.TryGetValue(movieId, out MovieModel purchasedMovie) == false)
                     continue;
-                previouslyPurchasedMovies.Add(purchasedMovie);
+                output.Add(purchasedMovie);
             }
 
-            List<MovieModel> filteredMovies = new List<MovieModel>();
-            if (currentProduct.Keywords.Count > 0)
-            {
-                filteredMovies = movies.Where(movie => movie.Keywords.Contains(currentProduct.Keywords[0])).ToList();
-            }
-            if(filteredMovies.Count <= 0)
-            {
-                return movies[0]; // fallback to a default movie.
-            }
-            Random random = new Random();
-            int randomElementFromFilteredMovies = random.Next(0, filteredMovies.Count() - 1);
-            recommendedProduct = filteredMovies[randomElementFromFilteredMovies];
+            return output;
+        }
 
-            return recommendedProduct;
+        private void RemovePreviouslyPurchasedProducts(List<MovieModel> filteredMovies, List<MovieModel> previouslyPurchasedMovies)
+        {
+            foreach (MovieModel movie in previouslyPurchasedMovies)
+            {
+                filteredMovies.Remove(movie);
+            }
         }
 
         private void CountTimesMovieHasBeenPurchased(UserModel user, IDictionary<int, int> moviePurchaseStats)

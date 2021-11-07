@@ -40,11 +40,10 @@ namespace SimpleRecommendationTests
             };
             _userSessions = new List<UserSessionModel>
             {
-                new UserSessionModel(1, 20),
+                new UserSessionModel(1, 5),
                 new UserSessionModel(2, 31),
                 new UserSessionModel(3, 12),
                 new UserSessionModel(5, 10),
-
             };
         }
 
@@ -108,5 +107,30 @@ namespace SimpleRecommendationTests
             Assert.IsInstanceOfType(recommendedProduct, typeof(MovieModel));
             Assert.AreNotEqual("", recommendedProduct.Name);
         }
+        [TestMethod]
+        public void RecommendProductToUser_IsNotSameAsCurrentlyViewedProduct()
+        {
+            Assert.Fail();
+        }
+        [TestMethod]
+        public void RecommendProductToUser_IsNotAPreviouslyPurchasedProduct()
+        {
+            Assert.Fail();
+        }
+        [TestMethod]
+        public void RecommendProductToUser_ThrowsExceptions()
+        {
+            Assert.ThrowsException<KeyNotFoundException>(() =>
+            {
+                // Can't find product (_movies doesn't have the product associated with _usersession[2])
+                _recommendationCalculator.RecommendProductToUser(_userSessions[2], _movies, _users);
+            });
+            Assert.ThrowsException<KeyNotFoundException>(() =>
+            {
+                // Can't find user
+                _recommendationCalculator.RecommendProductToUser(_userSessions[0], _movies, new List<UserModel>());
+            });
+        }
+
     }
 }
