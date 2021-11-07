@@ -3,8 +3,10 @@ using SimpleRecommendation;
 using SimpleRecommendation.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimpleRecommendationTests
@@ -17,6 +19,7 @@ namespace SimpleRecommendationTests
         [TestInitialize]
         public void Init()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             _dataReader = new DataReader();
         }
 
