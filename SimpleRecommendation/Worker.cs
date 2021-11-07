@@ -15,53 +15,7 @@ namespace SimpleRecommendation
         {
             try
             {
-                Console.WriteLine("Welcome to the \"website\"");
-                Console.WriteLine();
-                PrintHeadline("DataReader Tests");
-
-                DataReader reader = new DataReader();
-
-                #region Parser Tryout
-                foreach (var item in reader.ReadUserSessionsFromTextFile())
-                {
-                    Console.WriteLine(item);
-                }
-                
-                #endregion
-
-                #region Read Movies
-                //try
-                //{
-                //    List<MovieModel> movies = reader.ReadMoviesFromTextFile();
-                //    foreach (MovieModel movie in movies)
-                //    {
-                //        Console.WriteLine(movie);
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine($"Failed to read Movies from txt.");
-                //    if (Environment.GetEnvironmentVariable("Mode") == "Debug")
-                //    {
-                //        Console.WriteLine($"Exception message: {ex.Message}");
-                //    }
-                //}
-                #endregion
-
-                #region Read Users
-                //try
-                //{
-                //    List<UserModel> users = reader.ReadUsersFromTextFile();
-                //    foreach (UserModel user in users)
-                //    {
-                //        Console.WriteLine(user);
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine(ex.Message);
-                //}
-                #endregion
+                PrintHeadline("Welcome to the \"website\"");
             }
             catch (Exception e)
             {
