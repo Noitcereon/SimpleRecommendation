@@ -9,7 +9,7 @@ namespace SimpleRecommendation
 {
     public class Worker
     {
-        private DataReader _reader = new DataReader();
+        private IDataReader _reader = new DataReader();
 
         public void PrintIntro()
         {

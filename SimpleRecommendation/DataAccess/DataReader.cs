@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SimpleRecommendation
 {
-    public class DataReader
+    public class DataReader : IDataReader
     {
         private string _dataDirectory = Directory.GetCurrentDirectory() + "/CaseData";
         private IModelParser _modelParser = new ModelParser();
@@ -33,7 +33,7 @@ namespace SimpleRecommendation
 
             return movies;
         }
-       
+
         public List<UserModel> ReadUsersFromTextFile()
         {
             string usersTxtPath = _dataDirectory + "/Users.txt";
