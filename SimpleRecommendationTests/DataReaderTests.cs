@@ -52,5 +52,19 @@ namespace SimpleRecommendationTests
 
             Assert.IsTrue(users.Count > 0);
         }
+        [TestMethod]
+        public void ReadUserSessionsFromTextFile_ReturnsCorrectType()
+        {
+            List<UserSessionModel> sessions = _dataReader.ReadUserSessionsFromTextFile();
+
+            Assert.IsInstanceOfType(sessions, typeof(List<UserSessionModel>));
+        }
+        [TestMethod]
+        public void ReadUserSessionsFromTextFile_ReturnsMoreThan0()
+        {
+            List<UserSessionModel> sessions = _dataReader.ReadUserSessionsFromTextFile();
+
+            Assert.IsTrue(sessions.Count > 0);
+        }
     }
 }
